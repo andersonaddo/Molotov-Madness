@@ -5,7 +5,7 @@ using UnityEngine;
 public class playerController : MonoBehaviour
 {
     public float movementSpeed;
-    public bool isGrounded;
+    [HideInInspector]public bool isGrounded;
     bool canMove = true;
     bool isJumping, isWalking;
     public float jumpDelay;
@@ -50,7 +50,7 @@ public class playerController : MonoBehaviour
     {
         canMove = false;
         isJumping = true;
-        animator.SetBool("isJumping", true);
+        animator.SetTrigger("jump");
         yield return new WaitForSeconds(jumpDelay);
         myRb.AddForce(Vector2.up * jumpForce);
         canMove = true;
@@ -58,6 +58,5 @@ public class playerController : MonoBehaviour
         yield return new WaitUntil(()=> isGrounded);
         isJumping = false;
         animator.SetTrigger("landed");
-        animator.SetBool("isJumping", false);
     }
 }

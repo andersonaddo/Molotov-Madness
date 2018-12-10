@@ -10,7 +10,7 @@ public class weaponManager : MonoBehaviour
     public Transform shotgunLH, shotgunRH;
     public float throwDelay;
 
-    public enum weapon { shotgun, molotov, knife }
+    public enum weapon { knife, molotov, shotgun,  }
     public weapon equippedWeapon;
     bool wasHoldingShotGunLastFrame = false;
     bool isThrowingMolotov;
@@ -19,12 +19,32 @@ public class weaponManager : MonoBehaviour
 
     void Start()
     {
-        originalLHPosition = LeftHand.position;
-        originalRHPosition = RightHand.position;
+        originalLHPosition = LeftHand.localPosition;
+        originalRHPosition = RightHand.localPosition;
     }
 
     // Update is called once per frame
     void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            int chosenWeapon = (int) equippedWeapon;
+            chosenWeapon++;
+            if (chosenWeapon == 3) chosenWeapon = 0;
+            equippedWeapon = (weapon) chosenWeapon;
+        }
+        handleWeaponInput();
+    }
+
+
+    public IEnumerator throwMolotov()
+    {
+        yield return new WaitForSeconds(throwDelay);
+        isThrowingMolotov = false;
+        Instantiate(molotovPrefab, RightHand.position, Quaternion.identity);
+    }
+
+    void handleWeaponInput()
     {
         if (equippedWeapon == weapon.shotgun)
         {
@@ -46,8 +66,8 @@ public class weaponManager : MonoBehaviour
         {
             wasHoldingShotGunLastFrame = false;
             shotgun.SetActive(false);
-            RightHand.transform.position = originalRHPosition;
-            LeftHand.transform.position = originalLHPosition;
+            RightHand.transform.localPosition = originalRHPosition;
+            LeftHand.transform.localPosition = originalLHPosition;
         }
 
         if (equippedWeapon == weapon.molotov)
@@ -67,6 +87,7 @@ public class weaponManager : MonoBehaviour
             }
             molotovChild.SetActive(numberOfMolotovs != 0);
             knife.SetActive(false);
+            shotgun.SetActive(false);
         }
 
         if (equippedWeapon == weapon.knife)
@@ -82,14 +103,4 @@ public class weaponManager : MonoBehaviour
             }
         }
     }
-
-
-    public IEnumerator throwMolotov()
-    {
-        yield return new WaitForSeconds(throwDelay);
-        isThrowingMolotov = false;
-        Instantiate(molotovPrefab, RightHand.position, Quaternion.identity);
-    }
-
-
 }
