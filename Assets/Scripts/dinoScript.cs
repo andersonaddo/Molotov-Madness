@@ -6,16 +6,15 @@ public class dinoScript : MonoBehaviour
 {
 
     Animator animator;
-    Rigidbody2D myRb;
 
     //Patrolling Variables
-    public LayerMask layersThatBlockPatrolRaycast;
-
-    //Wall buffer is needed because if the dino is patrolling to a location very close to a wall, it might never actially 
-    //Alighn its center with it due to its own collider.
+    public LayerMask layersThatBlockPatrolRaycast;   
     public float maxPatrolDistance, patrolSpeed;
+    //Wall buffer is needed because if the dino is patrolling to a location very close to a wall, it might never actially 
+    //Alighn its center with it due to its own collider blocking it.
     float radius, wallBuffer;
     float patrolTargetX;
+    public float patrolDestinationWaitTime; //The waiting time when the dino reaches a patrol destination
 
     //Charging variables
     public LayerMask playerLayerMask;
@@ -25,17 +24,17 @@ public class dinoScript : MonoBehaviour
 
     bool goingLeft;
 
-    enum dinoState { idle, patrol, charging, hurt};
-    dinoState currentState, lastState;
+    public enum dinoState { patrol, charging, hurt};
+    public dinoState currentState { get; private set; }
+    public dinoState lastState { get; private set; }
 
 
     void Start()
     {
-        radius = GetComponent<CircleCollider2D>().radius * transform.localScale.x;
-        myRb = GetComponent<Rigidbody2D>();
+        radius = GetComponentInChildren<CircleCollider2D>().radius * transform.localScale.x;
         animator = GetComponent<Animator>();
 
-        wallBuffer = GetComponent<BoxCollider2D>().bounds.extents.x + 0.03f;
+        wallBuffer = GetComponent<BoxCollider2D>().bounds.extents.x * transform.lossyScale.x + 0.03f;
 
         currentState = dinoState.patrol;
         lastState = currentState;
@@ -46,12 +45,12 @@ public class dinoScript : MonoBehaviour
 
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawCube(new Vector2(patrolTargetX, transform.position.y), Vector3.one/3);
-    }
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawCube(new Vector2(patrolTargetX, transform.position.y), Vector3.one/3);
+    //}
 
-    void changeState(dinoState newState)
+    public void changeState(dinoState newState)
     {
         lastState = currentState;
         currentState = newState;
@@ -64,14 +63,12 @@ public class dinoScript : MonoBehaviour
         RaycastHit2D raycast = Physics2D.Raycast(transform.position, Vector2.right * (goingLeft ? -1 : 1), maxPatrolDistance, layersThatBlockPatrolRaycast);
         patrolTargetX = 0;
         float xLimit = 0;
-        if (raycast.collider == null) {
+
+        if (raycast.collider == null)
             xLimit = (transform.position.x + (goingLeft ? -maxPatrolDistance : maxPatrolDistance));
-            xLimit += (goingLeft ? wallBuffer : -wallBuffer);
-        }
-        else
-        {
-            xLimit = raycast.point.x;
-        }
+        else xLimit = raycast.point.x;
+
+        xLimit += (goingLeft ? wallBuffer : -wallBuffer);
         if (goingLeft) patrolTargetX = Random.Range(xLimit, transform.position.x);
         else patrolTargetX = Random.Range(transform.position.x, xLimit);
         goingLeft = patrolTargetX < transform.position.x; //Sometimes adding the wallBuffer can make targets that are originally left or right change to right or left.
@@ -90,7 +87,7 @@ public class dinoScript : MonoBehaviour
             if ((goingLeft && transform.position.x <= patrolTargetX) || (!goingLeft && transform.position.x >= patrolTargetX))
             {
                 animator.SetBool("isWalking", false);
-                yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(patrolDestinationWaitTime);
                 getNewPatrolTarget();
             }
         }
@@ -102,6 +99,7 @@ public class dinoScript : MonoBehaviour
         while (true)
         {
             yield return null;
+            if (currentState == dinoState.hurt) continue;
             //Start charging immediately if you you notice him for first time
             if (playerCollider == null)
             {
