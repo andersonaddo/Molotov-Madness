@@ -5,7 +5,7 @@ using UnityEngine;
 public class followMouse : MonoBehaviour
 {
 
-    Vector2 targetPosition;
+    public Vector2 targetPosition { get; private set; }
 
     public float minMaxAngle;
     [HideInInspector]public bool isFlipped;
@@ -49,7 +49,7 @@ public class followMouse : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    //This update is called after playerController's update, so isFlipped will be accurate
     void Update()
     {
         transform.localRotation = rotateToPosition();
