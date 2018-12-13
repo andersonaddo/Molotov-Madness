@@ -27,12 +27,14 @@ public class dinoScript : MonoBehaviour
     public enum dinoState { patrol, charging, hurt};
     public dinoState currentState { get; private set; }
     public dinoState lastState { get; private set; }
+    public isGroundedRaycaster goundedChecker;
 
 
     void Start()
     {
         radius = GetComponentInChildren<CircleCollider2D>().radius * transform.localScale.x;
         animator = GetComponent<Animator>();
+        goundedChecker = GetComponent<isGroundedRaycaster>();
 
         wallBuffer = GetComponent<BoxCollider2D>().bounds.extents.x * transform.lossyScale.x + 0.03f;
 
@@ -81,6 +83,7 @@ public class dinoScript : MonoBehaviour
         while (true)
         {
             yield return null;
+            if (!goundedChecker.isGrounded) continue;
             if (currentState != dinoState.patrol) continue;
             animator.SetBool("isWalking", true);
             transform.Translate(Vector2.right * (goingLeft ? -1 : 1) * patrolSpeed * Time.deltaTime); //ideally I should be using rigidbody.moveposition, but it can sometimes stop movement for no reason
@@ -99,6 +102,7 @@ public class dinoScript : MonoBehaviour
         while (true)
         {
             yield return null;
+            if (!goundedChecker.isGrounded) continue;
             if (currentState == dinoState.hurt) continue;
             //Start charging immediately if you you notice him for first time
             if (playerCollider == null)

@@ -44,8 +44,8 @@ public class shotgunScript : MonoBehaviour
                 hitObjects.Add(newHit.collider.gameObject);
             }
 
-            if (newHit.collider == null) Debug.DrawRay(barrelEnd.position, Quaternion.Euler(0, 0, angularSeparation * i) * principalVector, Color.red, 1);
-            else Debug.DrawRay(barrelEnd.position, newHit.point - (Vector2)barrelEnd.position, Color.red, 1);
+            if (newHit.collider == null) Debug.DrawRay(barrelEnd.position, Quaternion.Euler(0, 0, angularSeparation * i) * principalVector, Color.red, 0.75f);
+            else Debug.DrawRay(barrelEnd.position, newHit.point - (Vector2)barrelEnd.position, Color.red, 0.75f);
         }
     }
 }

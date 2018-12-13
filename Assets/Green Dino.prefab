@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 307465030237925475}
   - component: {fileID: 307465030237925473}
   - component: {fileID: 307465030237925474}
+  - component: {fileID: 1997673704043166665}
   m_Layer: 13
   m_Name: Green Dino
   m_TagString: Untagged
@@ -175,6 +176,7 @@ MonoBehaviour:
     m_Bits: 512
   chargeSpeed: 6
   alertSampleRate: 1
+  goundedChecker: {fileID: 0}
 --- !u!114 &307465030237925473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,6 +209,23 @@ MonoBehaviour:
   isDead: 0
   healthSlider: {fileID: 0}
   disableSliderOnPlay: 0
+--- !u!114 &1997673704043166665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307465030237925498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e16f935824ec4145bfd88e36b03351c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raycastLength: 0.58
+  drawRaycastLine: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &5170309514366308637
 GameObject:
   m_ObjectHideFlags: 0
