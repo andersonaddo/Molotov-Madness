@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 6634e2672f908a946adfb9fcb5674de5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e16f935824ec4145bfd88e36b03351c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raycastLength: 0.58
+  raycastLength: 0.6
   drawRaycastLine: 0
   groundLayer:
     serializedVersion: 2
@@ -272,4 +272,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 3.91
+  m_Radius: 5.230044
