@@ -27,7 +27,7 @@ public class shotgunScript : MonoBehaviour
         GameObject bullet = Instantiate(disgardedBullet, disgardedBulletPosition.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody2D>().angularVelocity = disgardedBulletLaunchAngularVelosity;
         bullet.GetComponent<Rigidbody2D>().velocity = transform.InverseTransformDirection(disgardedBulletLaunchDirection).normalized * disgardedBulletLaunchSpeed;
-        if(GetComponent<followMouse>().isFlipped) bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(-bullet.GetComponent<Rigidbody2D>().velocity.x, bullet.GetComponent<Rigidbody2D>().velocity.y);
+        if(GetComponent<aimingScript>().isFlipped) bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(-bullet.GetComponent<Rigidbody2D>().velocity.x, bullet.GetComponent<Rigidbody2D>().velocity.y);
 
 
         float angularSeparation = (angleOfRange / 2f) / numberOfRaysPerHalfSweep;

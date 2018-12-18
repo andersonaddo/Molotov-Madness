@@ -2,22 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class followMouse : MonoBehaviour
+public class aimingScript : MonoBehaviour
 {
 
-    public Vector2 targetPosition { get; private set; }
+    public followCursor crosshairs;
 
     public float minMaxAngle;
     [HideInInspector]public bool isFlipped;
 
     Quaternion rotateToPosition()
     {
-
-        Vector3 pointTouched = Input.mousePosition;
-        targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(pointTouched.x, pointTouched.y, 11));
-
-        float deltaY = targetPosition.y - transform.position.y;
-        float deltaX = targetPosition.x - transform.position.x;
+        float deltaY = crosshairs.targetPosition.y - transform.position.y;
+        float deltaX = crosshairs.targetPosition.x - transform.position.x;
 
         float angleToRotate = Mathf.Atan2(Mathf.Abs(deltaY), Mathf.Abs(deltaX));
 

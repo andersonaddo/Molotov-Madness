@@ -13,8 +13,12 @@ public class playerController : MonoBehaviour
 
     Rigidbody2D myRb;
     Animator animator;
-    public followMouse shotgun;
-      
+    public aimingScript shotgun;
+
+    //Variables for flipping
+    float previousShotgunTargetRelativeXSign, previousHorizontalInputSign;
+
+
     void Start()
     {
         myRb = GetComponent<Rigidbody2D>();
@@ -64,11 +68,27 @@ public class playerController : MonoBehaviour
     void determineFaceDirection()
     {
         if (InputManager.getHorizontalAxis() != 0)
-            transform.localScale = new Vector3(InputManager.getHorizontalAxis() * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        {
+            float currentSign = Mathf.Sign(InputManager.getHorizontalAxis());
+            if (previousHorizontalInputSign != currentSign)
+            {
+                transform.localScale = new Vector3(InputManager.getHorizontalAxis() * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                shotgun.crosshairs.flipLocalX(currentSign);
+            }
+            previousHorizontalInputSign = currentSign;
+        }
         else if (GetComponent<weaponManager>().equippedWeapon == weaponManager.weapon.shotgun) //if the player isn't pressing the movement buttons and is aiming
         {
-            float shotgunTagetRelativeXSign = Mathf.Sign(shotgun.targetPosition.x - transform.position.x);
-            transform.localScale = new Vector3(shotgunTagetRelativeXSign * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            float shotgunTargetRelativeXSign = Mathf.Sign(shotgun.crosshairs.targetPosition.x - transform.position.x);
+            if (previousShotgunTargetRelativeXSign != shotgunTargetRelativeXSign)
+            {
+                transform.localScale = new Vector3(shotgunTargetRelativeXSign * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                shotgun.crosshairs.flipLocalX(shotgunTargetRelativeXSign);
+            }
+            previousShotgunTargetRelativeXSign = shotgunTargetRelativeXSign;
         }
     }
+
+
+
 }

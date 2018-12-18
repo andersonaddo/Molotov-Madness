@@ -37,4 +37,14 @@ public static class InputManager
     {
         return Input.GetButtonDown("Keyboard and PS4 Secondary");
     }
+
+    public static float getGamepadRightX()
+    {
+        return Input.GetAxis("PS4 Right Analog Horizontal");
+    }
+
+    public static float getGamepadRightY()
+    {
+        return -Input.GetAxis("PS4 Right Analog Vertical"); //Unity inverts it for some reason
+    }
 }
