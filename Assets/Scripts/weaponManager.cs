@@ -26,7 +26,7 @@ public class weaponManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (InputManager.getWeaponSwitchInput())
         {
             int chosenWeapon = (int) equippedWeapon;
             chosenWeapon++;
@@ -55,7 +55,7 @@ public class weaponManager : MonoBehaviour
             RightHand.transform.position = shotgunRH.position;
             LeftHand.transform.position = shotgunLH.position;
 
-            if (Input.GetKeyDown(KeyCode.Mouse0) && shotgunAmmo != 0)
+            if (InputManager.primaryInputDown() && shotgunAmmo != 0)
             {
                 shotgun.GetComponent<shotgunScript>().shoot();
             }
@@ -72,7 +72,7 @@ public class weaponManager : MonoBehaviour
 
         if (equippedWeapon == weapon.molotov)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0) && !isThrowingMolotov && numberOfMolotovs != 0)
+            if (InputManager.primaryInputDown() && !isThrowingMolotov && numberOfMolotovs != 0)
             {
                 isThrowingMolotov = true;
                 StartCoroutine("throwMolotov");
@@ -80,7 +80,7 @@ public class weaponManager : MonoBehaviour
                 numberOfMolotovs--;
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse1) && numberOfMolotovs != 0)
+            if (InputManager.secondaryInputDown() && numberOfMolotovs != 0)
             {
                 GetComponent<Animator>().SetTrigger("drink");
                 numberOfMolotovs--;
@@ -97,7 +97,7 @@ public class weaponManager : MonoBehaviour
             knife.SetActive(true);
 
 
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (InputManager.primaryInputDown())
             {
                 GetComponent<Animator>().SetTrigger("knife");
             }

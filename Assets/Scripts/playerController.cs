@@ -27,15 +27,15 @@ public class playerController : MonoBehaviour
     {
         determineFaceDirection();
 
-        if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
+        if (InputManager.getJumpInput() && !isJumping)
         {
             StartCoroutine("Jump");
         }
 
-        if (Input.GetAxisRaw("Horizontal") != 0 && canMove)
+        if (InputManager.getHorizontalAxis() != 0 && canMove)
         {
             //maintain velocity
-            transform.position = (movementSpeed * Vector3.right * Time.deltaTime * Input.GetAxisRaw("Horizontal") + transform.position);
+            transform.position = (movementSpeed * Vector3.right * Time.deltaTime * InputManager.getHorizontalAxis() + transform.position);
 
             if (!animator.GetBool("isWalking") && isGrounded) animator.SetBool("isWalking", true);
             else if (animator.GetBool("isWalking") && !isGrounded) animator.SetBool("isWalking", false);
@@ -43,9 +43,7 @@ public class playerController : MonoBehaviour
         else
         {
             animator.SetBool("isWalking", false);
-        }
-
-        
+        }        
     }
 
     IEnumerator Jump()
@@ -65,8 +63,8 @@ public class playerController : MonoBehaviour
     //This allows the shotgun to also influence where the playre if facing
     void determineFaceDirection()
     {
-        if (Input.GetAxisRaw("Horizontal") != 0)
-            transform.localScale = new Vector3(Input.GetAxisRaw("Horizontal") * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        if (InputManager.getHorizontalAxis() != 0)
+            transform.localScale = new Vector3(InputManager.getHorizontalAxis() * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         else if (GetComponent<weaponManager>().equippedWeapon == weaponManager.weapon.shotgun) //if the player isn't pressing the movement buttons and is aiming
         {
             float shotgunTagetRelativeXSign = Mathf.Sign(shotgun.targetPosition.x - transform.position.x);
