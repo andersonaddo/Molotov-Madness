@@ -47,4 +47,9 @@ public static class InputManager
     {
         return -Input.GetAxis("PS4 Right Analog Vertical"); //Unity inverts it for some reason
     }
+
+    public static bool getResetInput()
+    {
+        return Input.GetButtonDown("Keyboard and PS4 reset");
+    }
 }

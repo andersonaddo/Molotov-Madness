@@ -50,4 +50,14 @@ public class aimingScript : MonoBehaviour
     {
         transform.localRotation = rotateToPosition();
     }
+
+    void OnEnable()
+    {
+        crosshairs.gameObject.SetActive(true);
+    }
+
+    void OnDisable()
+    {
+        crosshairs.gameObject.SetActive(false);
+    }
 }
